@@ -1,12 +1,21 @@
 <template>
   <div class="board">
     <div class="columns-wrapper">
-      <div v-for="(column, index) in board.columns" :key="index" class="column">
+      <div
+        v-for="(column, $columnIndex) in board.columns"
+        :key="$columnIndex"
+        class="column"
+        @drop="moveTask($event, column.tasks)"
+        @dragover.prevent
+        @dragenter.prevent
+      >
         <div class="column-name">{{ column.name }}</div>
         <div
-          v-for="task in column.tasks"
-          :key="task.id"
+          v-for="(task, $taskIndex) in column.tasks"
+          :key="$taskIndex"
           class="task"
+          draggable="true"
+          @dragstart="pickupTask($event, $taskIndex, $columnIndex)"
           @click="openModal(task)"
         >
           <span>{{ task.name }}</span>
@@ -54,6 +63,19 @@ export default {
         name: event.target.value
       });
       event.target.value = "";
+    },
+    pickupTask(event, taskIndex, fromColumnIndex) {
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.dropEffect = "move";
+      event.dataTransfer.setData("task-index", taskIndex);
+      event.dataTransfer.setData("from-column-index", fromColumnIndex);
+    },
+    moveTask(event, toTasks) {
+      const fromColumnIndex = event.dataTransfer.getData("from-column-index");
+      const fromTasks = this.board.columns[fromColumnIndex].tasks;
+      const taskIndex = event.dataTransfer.getData("task-index");
+
+      this.$store.commit("MOVE_TASK", { fromTasks, toTasks, taskIndex });
     }
   }
 };
