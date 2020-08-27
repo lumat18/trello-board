@@ -9,7 +9,7 @@
       class="task-description"
       :value="task.description"
       @change="updateTaskProperty($event, 'description')"
-    />/>
+    />
   </div>
 </template>
 

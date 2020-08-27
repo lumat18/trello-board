@@ -35,6 +35,14 @@
           @keyup.enter="createTask($event, column.tasks)"
         />
       </div>
+      <div class="column">
+        <input
+          type="text"
+          v-model="newColumnName"
+          placeholder="New column name"
+          @keyup.enter="createColumn"
+        />
+      </div>
     </div>
     <div class="modal" v-if="isTaskModalOpen" @click.self="closeModal">
       <router-view />
@@ -51,6 +59,11 @@ import { mapState } from "vuex";
 export default {
   name: "Board",
   components: { AppButton },
+  data() {
+    return {
+      newColumnName: ""
+    };
+  },
   computed: {
     ...mapState(["board"]),
     isTaskModalOpen() {
@@ -70,6 +83,12 @@ export default {
         name: event.target.value
       });
       event.target.value = "";
+    },
+    createColumn() {
+      this.$store.commit("CREATE_COLUMN", {
+        name: this.newColumnName
+      });
+      this.newColumnName = "";
     },
     pickupTask(event, taskIndex, fromColumnIndex) {
       event.dataTransfer.effectAllowed = "move";
