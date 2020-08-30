@@ -1,38 +1,29 @@
 <template>
   <div
-    class="column"
-    @drop="moveTaskOrColumn($event, column.tasks, columnIndex)"
+    class="task"
+    draggable="true"
+    @dragstart="pickupTask($event, taskIndex, columnIndex)"
+    @click="openModal(task)"
     @dragover.prevent
     @dragenter.prevent
-    draggable="true"
-    @dragstart.self="pickupColumn($event, columnIndex)"
+    @drop.stop="moveTaskOrColumn($event, column.tasks, columnIndex, taskIndex)"
   >
-    <div class="column-name">{{ column.name }}</div>
-    <ColumnTask
-      v-for="(task, $taskIndex) in column.tasks"
-      :key="$taskIndex"
-      :task="task"
-      :taskIndex="$taskIndex"
-      :column="column"
-      :columnIndex="columnIndex"
-      :board="board"
-    />
-    <input
-      type="text"
-      placeholder="+ Add task"
-      @keyup.enter="createTask($event, column.tasks)"
-    />
+    <span>{{ task.name }}</span>
+    <p v-if="task.description">{{ task.description }}</p>
   </div>
 </template>
-
 <script>
-import ColumnTask from "./ColumnTask";
 export default {
-  name: "BoardColumn",
-  components: {
-    ColumnTask
-  },
+  name: "ColumnTask",
   props: {
+    task: {
+      type: Object,
+      required: true
+    },
+    taskIndex: {
+      type: Number,
+      required: true
+    },
     column: {
       type: Object,
       required: true
@@ -47,18 +38,15 @@ export default {
     }
   },
   methods: {
-    createTask(event, tasks) {
-      this.$store.commit("CREATE_TASK", {
-        tasks,
-        name: event.target.value
-      });
-      event.target.value = "";
+    openModal(task) {
+      this.$router.push({ name: "task", params: { id: task.id } });
     },
-    pickupColumn(event, fromColumnIndex) {
+    pickupTask(event, taskIndex, fromColumnIndex) {
       event.dataTransfer.effectAllowed = "move";
       event.dataTransfer.dropEffect = "move";
+      event.dataTransfer.setData("task-index", taskIndex);
       event.dataTransfer.setData("from-column-index", fromColumnIndex);
-      event.dataTransfer.setData("type", "column");
+      event.dataTransfer.setData("type", "task");
     },
     moveTaskOrColumn(event, toTasks, toColumnIndex, toTaskIndex) {
       const type = event.dataTransfer.getData("type");
@@ -89,14 +77,13 @@ export default {
 </script>
 
 <style scoped>
-.column {
+.task {
+  display: block;
+  cursor: pointer;
+  background-color: lightgray;
   border: 1px solid black;
-  margin: 8px;
-  padding: 4px;
   border-radius: 8px;
-  width: 250px;
-}
-.column-name {
-  font-weight: bolder;
+  margin: 4px;
+  padding: 4px;
 }
 </style>
