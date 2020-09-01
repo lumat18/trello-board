@@ -14,12 +14,12 @@ export default {
     }
   },
   methods: {
-    moveTaskOrColumn(event, toTasks, toColumnIndex, toTaskIndex) {
-      const type = event.dataTransfer.getData("type");
-      if (type === "task") {
-        this.moveTask(event, toTasks, toTaskIndex);
+    moveTaskOrColumn(transferData) {
+      console.log("transferData: ", transferData);
+      if (transferData.type === "task") {
+        this.moveTask(transferData);
       } else {
-        this.moveColumn(event, toColumnIndex);
+        this.moveColumn(transferData);
       }
     },
     moveTask(event, toTasks, toTaskIndex) {
@@ -34,9 +34,11 @@ export default {
         toTaskIndex
       });
     },
-    moveColumn(event, toColumnIndex) {
-      const fromColumnIndex = event.dataTransfer.getData("from-column-index");
-      this.$store.commit("MOVE_COLUMN", { fromColumnIndex, toColumnIndex });
+    moveColumn({ fromColumnIndex }) {
+      this.$store.commit("MOVE_COLUMN", {
+        fromColumnIndex,
+        toColumnIndex: this.columnIndex
+      });
     }
   }
 };
