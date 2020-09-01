@@ -15,23 +15,20 @@ export default {
   },
   methods: {
     moveTaskOrColumn(transferData) {
-      console.log("transferData: ", transferData);
       if (transferData.type === "task") {
         this.moveTask(transferData);
       } else {
         this.moveColumn(transferData);
       }
     },
-    moveTask(event, toTasks, toTaskIndex) {
-      const fromColumnIndex = event.dataTransfer.getData("from-column-index");
-      const fromTasks = this.board.columns[fromColumnIndex].tasks;
-      const taskIndex = event.dataTransfer.getData("task-index");
+    moveTask({ fromColumnIndex, fromTaskIndex }) {
+      const fromColumnTasks = this.board.columns[fromColumnIndex].tasks;
 
       this.$store.commit("MOVE_TASK", {
-        fromTasks,
-        toTasks,
-        taskIndex,
-        toTaskIndex
+        fromColumnTasks,
+        toColumnTasks: this.column.tasks,
+        taskIndex: fromTaskIndex,
+        toTaskIndex: this.taskIndex
       });
     },
     moveColumn({ fromColumnIndex }) {
