@@ -48,12 +48,6 @@ export default {
         name: event.target.value
       });
       event.target.value = "";
-    },
-    pickupColumn(event, fromColumnIndex) {
-      event.dataTransfer.effectAllowed = "move";
-      event.dataTransfer.dropEffect = "move";
-      event.dataTransfer.setData("from-column-index", fromColumnIndex);
-      event.dataTransfer.setData("type", "column");
     }
   }
 };
