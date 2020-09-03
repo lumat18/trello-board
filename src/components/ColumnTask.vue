@@ -9,7 +9,7 @@
         fromTaskIndex: taskIndex
       }"
     >
-      <span>{{ task.name }}</span>
+      <span :class="'task-title' + taskIndex">{{ task.name }}</span>
       <p v-if="task.description">{{ task.description }}</p>
     </AppDrag>
   </AppDrop>

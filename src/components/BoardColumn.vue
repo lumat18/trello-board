@@ -18,6 +18,7 @@
         :board="board"
       />
       <input
+        :class="'task-input' + columnIndex"
         type="text"
         placeholder="+ Add task"
         @keyup.enter="createTask($event, column.tasks)"
