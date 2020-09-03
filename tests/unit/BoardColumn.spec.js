@@ -8,19 +8,30 @@ import Vuex from "vuex";
 const localVue = createLocalVue();
 localVue.use(Vuex);
 
-const store = new Vuex.Store({
-  state: {
-    board: initBoard
-  },
-  mutations: {
-    CREATE_TASK(state, { tasks, name }) {
-      tasks.push({
-        name,
-        id: uuid(),
-        description: ""
-      });
+let defaultBoard = "";
+let store = "";
+
+function resetStore(store) {
+  defaultBoard = JSON.parse(JSON.stringify(initBoard));
+  store.state.board = defaultBoard;
+}
+
+beforeEach(() => {
+  store = new Vuex.Store({
+    state: {
+      board: null
+    },
+    mutations: {
+      CREATE_TASK(state, { tasks, name }) {
+        tasks.push({
+          name,
+          id: uuid(),
+          description: ""
+        });
+      }
     }
-  }
+  });
+  resetStore(store);
 });
 
 describe("BoardColumn", () => {
@@ -35,8 +46,8 @@ describe("BoardColumn", () => {
       localVue,
       propsData: {
         columnIndex: 0,
-        column: initBoard.columns[0],
-        board: initBoard
+        column: defaultBoard.columns[0],
+        board: defaultBoard
       }
     });
     const numberOfTasksBefore = store.state.board.columns[0].tasks.length;
@@ -46,5 +57,21 @@ describe("BoardColumn", () => {
     //then
     const numberOfTasksAfter = store.state.board.columns[0].tasks.length;
     expect(numberOfTasksAfter).toBeGreaterThan(numberOfTasksBefore);
+  });
+
+  it("should mount 3 tasks", () => {
+    //given
+    const wrapper = mount(BoardColumn, {
+      store,
+      localVue,
+      propsData: {
+        columnIndex: 0,
+        column: defaultBoard.columns[0],
+        board: defaultBoard
+      }
+    });
+    //when then
+    const numberOfTasksMounted = wrapper.findAll(".task").length;
+    expect(numberOfTasksMounted).toBe(3);
   });
 });
