@@ -1,16 +1,15 @@
 <template>
   <AppDrop @drop="moveTaskOrColumn">
     <AppDrag
-      class="task"
-      @click="openModal(task)"
       :transfer-data="{
         type: 'task',
         fromColumnIndex: columnIndex,
         fromTaskIndex: taskIndex
       }"
-    >
-      <span :class="'task-title' + taskIndex">{{ task.name }}</span>
-      <p v-if="task.description">{{ task.description }}</p>
+      ><div class="task" @click="openModal(task)">
+        <span :class="'task-title' + taskIndex">{{ task.name }}</span>
+        <p v-if="task.description">{{ task.description }}</p>
+      </div>
     </AppDrag>
   </AppDrop>
 </template>
