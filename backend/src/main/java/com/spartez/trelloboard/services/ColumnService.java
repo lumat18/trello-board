@@ -15,7 +15,11 @@ public class ColumnService {
         this.columnRepository = columnRepository;
     }
 
-    public List<Column> getAllColumnsByBoard(final Long boardId){
+    public List<Column> getAllColumnsByBoard(final Long boardId) {
         return columnRepository.findAllByBoardId(boardId);
+    }
+
+    public Column getColumnById(Long columnId) {
+        return columnRepository.findById(columnId).orElseThrow();
     }
 }

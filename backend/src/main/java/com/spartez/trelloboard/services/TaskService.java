@@ -15,11 +15,23 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public Task create(final Task task){
+    public Task create(final Task task) {
         return taskRepository.save(task);
     }
 
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+    public Task getTaskById(Long taskId) {
+        return taskRepository.findById(taskId).orElseThrow();
     }
+
+    public List<Task> getTasksByColumn(Long columnId) {
+        return taskRepository.findAllByColumnId(columnId);
+    }
+
+    public Task updateTask(final Task task) {
+        Task taskInDb = taskRepository.findById(task.getId()).orElseThrow();
+        taskInDb.setName(task.getName());
+        taskInDb.setDescription(task.getDescription());
+        return taskRepository.save(taskInDb);
+    }
+
 }
