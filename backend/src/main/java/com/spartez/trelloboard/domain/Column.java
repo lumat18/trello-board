@@ -1,24 +1,30 @@
 package com.spartez.trelloboard.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
 @Data
-public class Column {
+public class BoardColumn {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
-    public Column(final String name) {
+    @ManyToOne
+    @JsonIgnore
+    private Board board;
+
+    public BoardColumn(final String name, final Board board) {
+        this.name = name;
+    }
+
+    public BoardColumn(final String name){
         this.name = name;
     }
 }

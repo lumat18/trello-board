@@ -1,7 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import initBoard from "../init-board";
-import { saveStatePlugin, uuid } from "../utils";
+import { saveStatePlugin } from "../utils";
+import axios from "axios";
 
 Vue.use(Vuex);
 
@@ -26,12 +27,23 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    CREATE_TASK(state, { tasks, name }) {
-      tasks.push({
-        name,
-        id: uuid(),
-        description: ""
-      });
+    CREATE_TASK(state, { tasks, name, columnId }) {
+      const api = "http://localhost:8082/task/create";
+      axios
+        .post(api, {
+          name: name,
+          description: "",
+          userAssigned: "",
+          boardColumnId: columnId + 1
+        })
+        .then(response => response.data)
+        .then(data => {
+          console.log("response.data: ", data);
+          tasks.push(data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     CREATE_COLUMN(state, { name }) {
       state.board.columns.push({

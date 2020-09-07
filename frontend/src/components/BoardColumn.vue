@@ -45,7 +45,8 @@ export default {
     createTask(event, tasks) {
       this.$store.commit("CREATE_TASK", {
         tasks,
-        name: event.target.value
+        name: event.target.value,
+        columnId: this.columnIndex
       });
       event.target.value = "";
     }
