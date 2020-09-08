@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @Data
-public class BoardColumn {
+public class Column {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,11 +20,11 @@ public class BoardColumn {
     @JsonIgnore
     private Board board;
 
-    public BoardColumn(final String name, final Board board) {
+    public Column(final String name, final Board board) {
         this.name = name;
     }
 
-    public BoardColumn(final String name){
+    public Column(final String name){
         this.name = name;
     }
 }

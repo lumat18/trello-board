@@ -22,10 +22,12 @@ public class TaskController {
         this.columnService = columnService;
     }
 
-    @PostMapping
-    public Task createTask(@RequestBody final Task task, @RequestParam final Long columnId) {
-        Column column = columnService.getColumnById(columnId);
+    @PostMapping("/create")
+    public Task createTask(@RequestBody final Task task) {
+        log.info("Getting resource: " + task.toString());
+        Column column = columnService.getColumnById(task.getBoardColumnId());
         task.setColumn(column);
+        log.info("Creating resource: " + task.toString());
         return taskService.create(task);
     }
 

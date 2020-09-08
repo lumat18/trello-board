@@ -33,12 +33,12 @@ public class InitDatabase implements CommandLineRunner {
 
         List<Column> columns = List.of(todo, inProgress, done);
 
-        Task task1 = new Task("walk the dog", "", "Torin", todo);
-        Task task2 = new Task("eat lunch", "", "Torin", todo);
-        Task task3 = new Task("drink coffee", "", "Lucas", inProgress);
-        Task task4 = new Task("go shopping", "", "Greg", done);
-        Task task5 = new Task("take a nap", "", "Sleeper", done);
-        Task task6 = new Task("learn programming", "", "Lucas", done);
+        Task task1 = new Task("go shopping", "", "Torin", todo);
+        Task task2 = new Task("go shopping", "", "Torin", todo);
+        Task task3 = new Task("go shopping", "", "Lucas", inProgress);
+        Task task4 = new Task("go shopping", "", "Grzegorz Wanat", done);
+        Task task5 = new Task("go shopping", "", "Sleeper", done);
+        Task task6 = new Task("go shopping", "", "Lucas", done);
 
         List<Task> tasks = List.of(task1, task2, task3, task4, task5, task6);
 

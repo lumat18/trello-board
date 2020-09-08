@@ -4,6 +4,8 @@ import initBoard from "../init-board";
 import { saveStatePlugin } from "../utils";
 import axios from "axios";
 
+import router from "../router";
+
 Vue.use(Vuex);
 
 const board = JSON.parse(localStorage.getItem("board")) || initBoard;
@@ -43,6 +45,12 @@ export default new Vuex.Store({
         })
         .catch(err => {
           console.log(err);
+          router.push({
+            name: "error-modal",
+            params: {
+              message: err.message
+            }
+          });
         });
     },
     CREATE_COLUMN(state, { name }) {
